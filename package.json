@@ -1,0 +1,25 @@
+{
+  "name": "daily-schedule",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hoho4702/daily-schedule.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hoho4702/daily-schedule/issues"
+  },
+  "homepage": "https://github.com/hoho4702/daily-schedule#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mongoose": "^6.4.0",
+    "mongoose-auto-increment": "^5.0.1",
+    "nodemon": "^2.0.18"
+  }
+}
