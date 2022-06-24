@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router();
 const path = require('path');
-const url = require('url');
 
 const Users = require('../../models/userModel.js');
 const Sessions = require('../../models/sessionModel');
@@ -28,6 +27,7 @@ router.get("/", (req, res) => {
 })
 
 router.post("/", (req, res) => {
+
     Users.findOne({ id: req.body.id, pw: req.body.pw }, (err, user) => {
         if (err) {
             console.log(err.message);

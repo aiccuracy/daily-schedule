@@ -16,10 +16,14 @@ router.get("/pw", (req, res) => {
 })
 
 router.post("/id", (req, res) => {
+    
     assert(req.body.email.length !== 0, "email required");
     
     Users.findOne({ email: req.body.email }, (err, user) => {
-        if (err) console.log(err);
+        if (err) {
+            console.log(err.message);
+            res.status(400).send(err.message);
+        }
         else {
             if(user) res.status(200).send(`your id is '${user.id}'`);
             else res.status(400).send(`your email is not invalid.`);
@@ -32,7 +36,10 @@ router.post("/pw", (req, res) => {
     assert(req.body.id.length !== 0, "id required");
 
     Users.findOne({ email: req.body.email, id: req.body.id }, (err, user) => {
-        if (err) console.log(err);
+        if (err) {
+            console.log(err.message);
+            res.status(400).send(err.message);
+        }
         else {
             if(user) res.status(200).send(`your pw is '${user.pw}'`);
             else res.status(400).send("your email or id in not invalid.");
