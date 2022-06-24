@@ -17,6 +17,12 @@ router.put("/", async (req, res) => {
     let new_date = req.body.new_date;
     let new_private = req.body.new_private;
  
+    if(!new_user || !req.session.userId) {
+        console.log("login Required");
+        res.status(401).send("Login Required");
+        return;
+    }
+
     const schedule = await Schedules.findOne({scheduleNum: scheduleNum});
 
     if (!schedule) {
