@@ -7,17 +7,13 @@ const Users = require('../../models/userModel');
 
 router.get("/", (req, res) => {
     let signupHtmlPath = path.resolve(__dirname, '..', '..', 'html/user/signup.html');
-    res.sendFile(signupHtmlPath);
+    res.status(200).sendFile(signupHtmlPath);
 })
 
 router.post("/add", (req, res) => {
     assert(req.body.email.length !== 0, "email required");
     assert(req.body.id.length !== 0, "id required");
     assert(req.body.pw.length !== 0, "password required");
-
-    // let errors = req.validationErrors();
-
-    // if(errors) throw new Error("Invalid Input in SignUp");
 
     let userDetails = new Users({
         email: req.body.email,
@@ -27,13 +23,13 @@ router.post("/add", (req, res) => {
 
     userDetails.save((err, data) => {
         if(err) {
-            console.log(err);
+            console.log(err.message);
+            res.status(400).send(err.message);
         } else {
             console.log("saved");
+            res.status(201).send("New User Saved");
         }
     })
-
-    res.redirect("/user/signin");
 })
 
 module.exports = router;

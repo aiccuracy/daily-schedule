@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
 const userhomeRouter = require('./routes/user/userhome');
 const signinRouter = require("./routes/user/signin");
@@ -14,21 +16,37 @@ const appendRouter = require("./routes/calendar/append");
 const calendarDeleteRouter = require("./routes/calendar/delete");
 const calendarUpdateRouter = require("./routes/calendar/update");
 
-const app = express();
-
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true}));
-
 const MONGODB_URL = "mongodb://localhost:27017/calendar";
 const PORT = 8080;
 
+const app = express();
+
 const db = mongoose
-  .connect(MONGODB_URL, {
-})
+  .connect(MONGODB_URL, {})
   .then( 
     console.log('Successfully connected to mongodb')
   )
   .catch((e) => console.error(e));
+
+const store = MongoStore.create({
+  mongoUrl: MONGODB_URL,
+  collection: 'sessions'
+})
+
+app.use(express.json());
+// app.use(express.cookieParser());
+app.use(bodyParser.urlencoded({ extended: true}));
+
+app.use(session({
+  secret: "Devkor",
+  resave: false,
+  saveUninitialized: false,
+  store: store,
+  cookie:{
+    maxAge: 5,
+    httpOnly: true  
+  }
+}));
 
 app.listen(PORT, () => {
     console.log(`listening on ${PORT}`);

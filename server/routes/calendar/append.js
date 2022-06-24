@@ -6,7 +6,7 @@ const Schedules = require('../../models/scheduleModel');
 
 router.get("/", (req, res) => {
     let calendarAddHtmlPath = path.resolve(__dirname, '..', '..', 'html/calendar/append.html');
-    res.sendFile(calendarAddHtmlPath);
+    res.status(200).sendFile(calendarAddHtmlPath);
 })
 
 router.post("/", (req, res) => {
@@ -21,17 +21,13 @@ router.post("/", (req, res) => {
     scheduleDetails.save((err, data) => {
         if(err) {
             console.log(err.message);
-            res.send(err.message);
+            res.status(400).send(err.message);
         } else {
             console.log("new schedule added");
-            res.send("Append Success");
+            res.status(201).send("Append Success");
         }
     })
 
-})
-
-router.use((err, req, res, next) => {
-    res.json({ message: err.message});
 })
 
 module.exports = router;
