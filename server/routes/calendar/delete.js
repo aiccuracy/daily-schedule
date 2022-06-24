@@ -6,31 +6,36 @@ const Schedules = require('../../models/scheduleModel');
 
 router.delete("/", (req, res) => {
     let scheduleNum = req.body.scheduleNum;
-    let user = req.body.user;
+    let user = req.body.user || req.session.userId;
 
+    if(!user) {
+        console.log("login Required");
+        res.status(401).send("Login Required");
+        return;
+    }
 
     Schedules.findOne({ scheduleNum: scheduleNum }, (err, schedule) => {
         if (err) {
             console.log(err.message);
-            res.send(err.message);
+            res.status(400).send(err.message);
         }
         else {
             if(!user) {
-                console.log("Invalid User");
-                res.send("Invalid User");
+                console.log("Permission Denied");
+                res.status(403).send("Permission Denied");
             }
             else if(schedule) {
                 if ((!schedule.private) || (schedule.private && (user === schedule.user))) {
                     schedule.delete();
                     console.log("Delete Success");
-                    res.send("Delete Success");
+                    res.status(200).send("Delete Success");
                 }   
                 else {
                     console.log("Permission Denied");
-                    res.send("Permission Denied");
+                    res.status(403).send("Permission Denied");
                 }
             }
-            else res.send("Invalid Schedule Num");
+            else res.status(400).send("Invalid Schedule Num");
         }
     });
 })

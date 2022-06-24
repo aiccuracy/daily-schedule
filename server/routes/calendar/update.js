@@ -21,46 +21,21 @@ router.put("/", async (req, res) => {
 
     if (!schedule) {
         console.log("Invalid ScheduleNum");
-        res.send("Invalid ScheduleNum");
+        res.status(400).send("Invalid ScheduleNum");
     }
     else if (!new_user|| !new_task || !new_date || !new_private) {
         console.log("Invalid Input");
-        res.send("Invalid Input");
+        res.status(400).send("Invalid Input");
     }
     else if (schedule.private && (new_user !== schedule.user)) {
         console.log("Permission Denied");
-        res.send("Permission Denied");
+        res.status(403).send("Permission Denied");
     }
     else {
         await schedule.updateOne({ user: new_user, task: new_task, date: new_date, private: new_private });
         console.log("Update Success");
-        res.send("Update Success");
+        res.status(200).send("Update Success");
     }
-    
-
-    // Schedules.findOne({ scheduleNum: scheduleNum }, (err, schedule) => {
-    //     if (err) {
-    //         console.log(err.message);
-    //         res.send(err.message);
-    //     }
-    //     else if (!schedule) {
-    //         console.log("Invalid ScheduleNum");
-    //         res.send("Invalid ScheduleNum");
-    //     }
-    //     else if (!new_user|| !new_task || !new_date || !new_private) {
-    //         console.log("Invalid Input");
-    //         res.send("Invalid Input");
-    //     }
-    //     else if (schedule.private && (new_user !== schedule.user)) {
-    //         console.log("Permission Denied");
-    //         res.send("Permission Denied");
-    //     }
-    //     else {
-    //         schedule.updateOne({}, { user: new_user, task: new_task, date: new_date, private: new_private });
-    //         console.log("Update Success");
-    //         res.send("Update Success");
-    //     }
-    // })
 
 })
 

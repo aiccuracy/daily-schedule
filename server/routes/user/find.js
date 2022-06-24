@@ -7,12 +7,12 @@ const Users = require('../../models/userModel');
 
 router.get("/id", (req, res) => {
     let findIdHtmlPath = path.resolve(__dirname, '..', '..', 'html/user/findid.html');
-    res.sendFile(findIdHtmlPath);
+    res.status(200).sendFile(findIdHtmlPath);
 })
 
 router.get("/pw", (req, res) => {
     let findPWHtmlPath = path.resolve(__dirname, '..', '..', 'html/user/findpw.html');
-    res.sendFile(findPWHtmlPath);
+    res.status(200).sendFile(findPWHtmlPath);
 })
 
 router.post("/id", (req, res) => {
@@ -21,8 +21,8 @@ router.post("/id", (req, res) => {
     Users.findOne({ email: req.body.email }, (err, user) => {
         if (err) console.log(err);
         else {
-            if(user) res.send(`your id is '${user.id}'`);
-            else res.send(`your email is not invalid.`);
+            if(user) res.status(200).send(`your id is '${user.id}'`);
+            else res.status(400).send(`your email is not invalid.`);
         }
     });
 })
@@ -34,8 +34,8 @@ router.post("/pw", (req, res) => {
     Users.findOne({ email: req.body.email, id: req.body.id }, (err, user) => {
         if (err) console.log(err);
         else {
-            if(user) res.send(`your pw is '${user.pw}'`);
-            else res.send(`your email or id in not invalid.`);
+            if(user) res.status(200).send(`your pw is '${user.pw}'`);
+            else res.status(400).send("your email or id in not invalid.");
         }
     });
 })
